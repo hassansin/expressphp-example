@@ -27,7 +27,7 @@ $router->get('/{id}', function($req, $res){
     $res->render('todo/item.html.twig'); 
 });
 
-
+// mount routes to /todo endpoint
 $app->mount('/todo', $routes);
 
 // 404  
@@ -41,11 +41,6 @@ $app->run(3000, '127.0.0.1');
 ```
 
 ## Dependencies
-
-react/react
-nikic/fast-route
-pimple/pimple
-twig/twig
 
 * react/react 
 * pimple/pimple[Dependency Injection Container]
