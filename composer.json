@@ -1,0 +1,15 @@
+{
+    "require": {
+        "psr/http-message": "^1.0",
+        "react/react": "^0.4.2",
+        "nikic/fast-route": "^1.0",
+        "pimple/pimple": "^3.0",
+        "twig/twig": "^1.24"
+    },
+    "autoload": {
+        "psr-4": {
+            "ExpressPHP\\": "express-php",
+            "App\\": "server\\app"
+        }
+    }
+}
