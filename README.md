@@ -14,6 +14,8 @@ $app = new Express();
 
 // set views directory
 $app->set('views', __DIR__.'/app/views');
+$app->serveStatic(__DIR__.'/../client');
+
 
 // Define Routes
 $router = new Router();
@@ -28,16 +30,17 @@ $router->get('/{id}', function($req, $res){
 });
 
 // mount routes to /todo endpoint
-$app->mount('/todo', $routes);
-
-// 404  
-$app->get('/{id:.*}', function($req, $res){
-    $res->setStatus(404)->render('404.html.twig');
-});
-
+$app->mount('/todo', $router);
 
 $app->run(3000, '127.0.0.1');
 
+```
+
+A sample application is already provided. To run the app:
+
+```
+composer install
+php server/server.php
 ```
 
 ## Dependencies
@@ -46,4 +49,5 @@ $app->run(3000, '127.0.0.1');
 * pimple/pimple[Dependency Injection Container]
 * nikic/fast-route [routing]
 * twig/twig [template engine]
+* dflydev/apache-mime-types [to server static files Content-Type header]
 
