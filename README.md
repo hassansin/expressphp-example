@@ -14,6 +14,8 @@ $app = new Express();
 
 // set views directory
 $app->set('views', __DIR__.'/app/views');
+
+// set static file directory
 $app->serveStatic(__DIR__.'/../client');
 
 

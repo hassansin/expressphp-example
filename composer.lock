@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "681fbd169d55b8cdeac49321403f6e85",
-    "content-hash": "4ba7eadc8b6e8b599cdee51afbdba834",
+    "hash": "05455658190eaa00a07189b69fa8656a",
+    "content-hash": "68f10e8b0ba8fa8738de29c05b6f60a4",
     "packages": [
         {
             "name": "dflydev/apache-mime-types",
@@ -165,6 +165,39 @@
                 "uri"
             ],
             "time": "2016-04-13 19:56:01"
+        },
+        {
+            "name": "hassansin/expressphp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hassansin/expressphp.git",
+                "reference": "d84e7f507f39a4bc541fe94044ceb2f22d80273e"
+            },
+            "require": {
+                "dflydev/apache-mime-types": "^1.0.1",
+                "nikic/fast-route": "1.0.0",
+                "pimple/pimple": "^3.0.2",
+                "react/react": "^0.4.2",
+                "twig/twig": "^1.24.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ExpressPHP\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "hassansin",
+                    "email": "mhkr63@gmail.com"
+                }
+            ],
+            "description": "A ReactPHP micro-framework inspired by ExpressJS",
+            "time": "2016-06-04 21:22:11"
         },
         {
             "name": "nikic/fast-route",
@@ -845,7 +878,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "hassansin/expressphp": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
