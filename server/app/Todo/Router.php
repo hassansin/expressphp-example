@@ -14,7 +14,7 @@ class Router extends ExpressRouter{
         });
         $router->get('/{id}', function($req, $res){
             // print_r($req->params);
-            $res->render('todo/item.html.twig'); 
+            $res->render('todo/item.html.twig', $req->params); 
         });
         return $router;
     }

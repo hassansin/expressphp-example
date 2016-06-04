@@ -2,16 +2,22 @@
 <html>
     <head>
         {% block head %}
-            <link rel="stylesheet" href="/style.css" />
+            <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-XYCjB+hFAjSbgf9yKUgbysEjaVLOXhCgATTEBpCqT1R3jvG5LGRAK5ZIyRbH5vpX" crossorigin="anonymous">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+            <link href="/css/style.css" rel="stylesheet">
             <title>{% block title %}{% endblock %} - My Webpage</title>
         {% endblock %}
     </head>
     <body>
-        <div id="content">{% block content %}{% endblock %}</div>
-        <div id="footer">
-            {% block footer %}
-                &copy; Copyright 2011 by <a href="http://domain.invalid/">you</a>.
-            {% endblock %}
+        <div class="container">
+            <div id="content">{% block content %}{% endblock %}</div>
+            <div id="footer">
+                {% block footer %}
+                    &copy; Copyright 2011 by <a href="http://domain.invalid/">you</a>.
+                {% endblock %}
+            </div>    
         </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     </body>
 </html>

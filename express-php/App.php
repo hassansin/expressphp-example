@@ -16,6 +16,7 @@ use FastRoute\Dispatcher;
 use Pimple\Container;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
+use Dflydev\ApacheMimeTypes\PhpRepository as MimeTypes;
 
 class App {
     
@@ -45,34 +46,24 @@ class App {
         return $this->_router;
     }
     
-    public function mount($mountPath="/", $router){
-        // $reflector = new ReflectionClass($routeClass);
-        // if(!$reflector->isSubclassOf(Router::class)){
-        //     throw new Exception('Router is not an instanceof ExpressPHP\Router');
-        // }
-        
-        $this->lazyRouter();
-        if($router instanceof Router)
-            $this->_router->mount($mountPath, $router);
-            
-        else if($router instanceof Closure){
-            
-        }
-        
+    public function serveStatic($baseDir) {
+        $baseDir = realpath ($baseDir);
+        $this->settings['staticBaseDir'] = $baseDir;
     }
     
-    public function serveStatic($baseDir) {
-        
-        return function($req, $res, $next) {
-            echo $req->getPath();
-            return $next();
-        };
+    public function mount($mountPath="/", $router){
+        $this->lazyRouter();
+        if($router instanceof Router){
+            $this->_router->mount($mountPath, $router);
+        }
+        else if($router instanceof Closure){
+           
+        }
     }
     
     public function run($port = 80, $host="0.0.0.0") {
         $router = $this->_router;
         
-
         $this->dispatcher = \FastRoute\simpleDispatcher(function(RouteCollector $r) use($router){
             foreach($router->_stack as $route){
                 $r->addRoute($route->method, $route->path, $route->handle);
@@ -82,30 +73,43 @@ class App {
         
         $app = function (HTTPRequest $req, HTTPResponse $res) {
             
-            // while(/*match a route*/ || /*match with a dispatcher*/){
-                
-            // }
-        
             $res = new Response($res, $this);
+            $path = $req->getPath();
             
-            $routeInfo = $this->dispatcher->dispatch($req->getMethod(), $req->getPath());
-            // var_dump($routeInfo);
-            switch ($routeInfo[0]) {
-                case Dispatcher::NOT_FOUND:
-                    $res->writeHead(404);
-                    $res->end("Not Found");
-                    break;
-                case Dispatcher::METHOD_NOT_ALLOWED:
-                    $res->writeHead(405);
-                    $res->end("Method Not Allowed");
-                    break;
-                case Dispatcher::FOUND:
-                    $handle = $routeInfo[1];
-                    $vars = $routeInfo[2];
-                    $req->params = $vars;
-                    $handle($req, $res);
-                    break;
+            
+            if(isset($this->settings['staticBaseDir']) && is_file($this->settings['staticBaseDir'].$path)){
+                $filePath = $this->settings['staticBaseDir'].$path;
+                $mimeTypes = new MimeTypes;
+                $type = $mimeTypes->findType(pathinfo($filePath, PATHINFO_EXTENSION));
+                $res->writeHead(200, array(
+                    'Content-Type' => $type
+                ));
+                $res->end(file_get_contents($filePath));
             }
+            else{
+                $routeInfo = $this->dispatcher->dispatch($req->getMethod(), $req->getPath());
+                // var_dump($routeInfo);
+                switch ($routeInfo[0]) {
+                    case Dispatcher::NOT_FOUND:
+                        $res->writeHead(404);
+                        $res->end("Not Found");
+                        break;
+                    case Dispatcher::METHOD_NOT_ALLOWED:
+                        $res->writeHead(405);
+                        $res->end("Method Not Allowed");
+                        break;
+                    case Dispatcher::FOUND:
+                        $handle = $routeInfo[1];
+                        $vars = $routeInfo[2];
+                        $req->params = $vars;
+                        $handle($req, $res);
+                        break;
+                }
+            }
+            
+            
+            
+                
         };
         
         $this->loop = Factory::create();
